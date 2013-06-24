@@ -6,7 +6,9 @@
 #define HEX_NUM_PREFIX			"0x"
 #define HEX_NUM_NEXT_VAL		", "
 #define HEX_LANGC_TABLE_START	"{ "
-#define HEX_LANGC_TABLE_STOP	" }"
+#define HEX_LANGC_TABLE_STOP	" };"
+#define SHADOW_VAR				"variableShadow"
+#define REAL_VAR				"variable"
 
 DumbObfuscator::DumbObfuscator(QWidget *parent, Qt::WFlags flags)
 	: QMainWindow(parent, flags)
@@ -29,8 +31,20 @@ void DumbObfuscator::obfuscateButtonClicked( void )
 	{
 		QString outputText = "";
 		QString outputNum = "";
-		QString outputC = HEX_LANGC_TABLE_START;
-		unsigned char rot = ui.rotateValue->text().toUInt();
+		QString shadowVar, realVar;
+
+		if( ui.shadowVar->text() == "" )
+			shadowVar = SHADOW_VAR;
+		else
+			shadowVar = ui.shadowVar->text();
+
+		if( ui.realVar->text() == "" )
+			realVar = REAL_VAR;
+		else
+			realVar = ui.realVar->text();
+
+		QString outputC = "char " + shadowVar + "[] = " + QString(HEX_LANGC_TABLE_START);
+		signed char rot = ui.rotateValue->text().toInt();
 
 		if( ui.decrSwitch->isChecked() )
 			rot *= (-1);
@@ -75,27 +89,31 @@ void DumbObfuscator::obfuscateButtonClicked( void )
 				}
 				hexNum += rot;
 				hexStr = QString::number( hexNum, 16 );
+				auto tmpHex = hexStr.toStdString();
+				if( tmpHex.size() == 1 )
+					tmpHex.insert(0,"0");
+				auto tmpUnhex = QString::fromStdString(boost::algorithm::unhex( tmpHex ));
+				outputText.push_back( tmpUnhex );
+				if( hexStr.size() == 1 )
+					hexStr.push_front("0");
 				outputNum.push_back( hexStr );
-				outputText.push_back( QString::fromStdString(boost::algorithm::unhex( hexStr.toStdString() )) );
 				if( itrNext == output.end() )
-					outputC.push_back( HEX_NUM_PREFIX + hexStr + HEX_LANGC_TABLE_STOP );
+					outputC.push_back( HEX_NUM_PREFIX + hexStr.toUpper() + HEX_LANGC_TABLE_STOP );
 				else
-					outputC.push_back( HEX_NUM_PREFIX + hexStr + HEX_NUM_NEXT_VAL );
+					outputC.push_back( HEX_NUM_PREFIX + hexStr.toUpper() + HEX_NUM_NEXT_VAL );
 
 				digit = 1;
 				hexStr = "";
 				itr++;
 				continue;
 			}
-		
-			//auto itrNext = itr;
-			//std::advance( itrNext, 2 );
-			//if( itrNext != output.end() 
 		}
+
+		outputC.push_back("\nstd::string " + realVar + " = \"\";\nfor( int i=0; i<sizeof(" + shadowVar + "); i++ ) { " + realVar + ".push_back(" + shadowVar + "[i]+(" + QString::number(-rot) + ")); }");
 
 		ui.outputText->setPlainText( outputText );
 		ui.outputC->setPlainText( outputC );
-		ui.outputNum->setPlainText( outputNum );
+		ui.outputNum->setPlainText( outputNum.toUpper() );
 		ui.statusLabel->setText("Obfuscation completed!");
 	}
 	else
@@ -108,11 +126,13 @@ void DumbObfuscator::obfuscateButtonClicked( void )
 void DumbObfuscator::connectSignal( void )
 {
 	connect( ui.obfuscateButton, SIGNAL(clicked()), this, SLOT(obfuscateButtonClicked()) );
+	connect( ui.actionExit, SIGNAL(triggered()), this, SLOT(close()) );
 }
 
 void DumbObfuscator::disconnectSignals( void )
 {
 	disconnect( ui.obfuscateButton, SIGNAL(clicked()), this, SLOT(obfuscateButtonClicked()) );
+	disconnect( ui.actionExit, SIGNAL(triggered()), this, SLOT(close()) );
 }
 
 

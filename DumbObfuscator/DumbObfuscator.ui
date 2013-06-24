@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>600</width>
-    <height>641</height>
+    <height>711</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -29,7 +29,14 @@
         </widget>
        </item>
        <item>
-        <widget class="QPlainTextEdit" name="inputEdit"/>
+        <widget class="QPlainTextEdit" name="inputEdit">
+         <property name="documentTitle">
+          <string/>
+         </property>
+         <property name="plainText">
+          <string/>
+         </property>
+        </widget>
        </item>
        <item>
         <widget class="QLabel" name="label_2">
@@ -56,11 +63,59 @@
         <widget class="QPlainTextEdit" name="outputNum"/>
        </item>
        <item>
-        <widget class="QLabel" name="label_3">
-         <property name="text">
-          <string>Output C/C++:</string>
+        <layout class="QHBoxLayout" name="horizontalLayout_3">
+         <property name="topMargin">
+          <number>0</number>
          </property>
-        </widget>
+         <item>
+          <widget class="QLabel" name="label_3">
+           <property name="text">
+            <string>Output C/C++:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer_4">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_6">
+           <property name="text">
+            <string>Shadow var:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="shadowVar">
+           <property name="placeholderText">
+            <string>Shadow variable name</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_7">
+           <property name="text">
+            <string>Real var:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="realVar">
+           <property name="placeholderText">
+            <string>Real variable name</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </item>
        <item>
         <widget class="QPlainTextEdit" name="outputC">
@@ -109,6 +164,9 @@
                <property name="text">
                 <string notr="true"/>
                </property>
+               <property name="placeholderText">
+                <string notr="true">3 digit</string>
+               </property>
               </widget>
              </item>
             </layout>
@@ -139,6 +197,9 @@
           <widget class="QPushButton" name="obfuscateButton">
            <property name="text">
             <string>Obfuscate</string>
+           </property>
+           <property name="default">
+            <bool>true</bool>
            </property>
           </widget>
          </item>
