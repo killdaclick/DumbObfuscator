@@ -32,6 +32,17 @@ void DumbObfuscator::obfuscateButtonClicked( void )
 		QString outputText = "";
 		QString outputNum = "";
 		QString shadowVar, realVar;
+		QString varType = "";
+
+		if( ui.varQStringType->isChecked() && !ui.varStdStringType->isChecked() )
+			varType = "QString";
+		else if( !ui.varQStringType->isChecked() && ui.varStdStringType->isChecked() )
+			varType = "std::string";
+		else
+		{
+			ui.statusLabel->setText("Variable type ERROR!");
+			return;
+		}
 
 		if( ui.shadowVar->text() == "" )
 			shadowVar = SHADOW_VAR;
@@ -109,7 +120,7 @@ void DumbObfuscator::obfuscateButtonClicked( void )
 			}
 		}
 
-		outputC.push_back("\nstd::string " + realVar + " = \"\";\nfor( int i=0; i<sizeof(" + shadowVar + "); i++ ) { " + realVar + ".push_back(" + shadowVar + "[i]+(" + QString::number(-rot) + ")); }");
+		outputC.push_back("\n" + varType + " " + realVar + " = \"\";\nfor( int i=0; i<sizeof(" + shadowVar + "); i++ ) { " + realVar + ".push_back(" + shadowVar + "[i]+(" + QString::number(-rot) + ")); }");
 
 		ui.outputText->setPlainText( outputText );
 		ui.outputC->setPlainText( outputC );
