@@ -120,7 +120,7 @@ void DumbObfuscator::obfuscateButtonClicked( void )
 			}
 		}
 
-		outputC.push_back("\n" + varType + " " + realVar + " = \"\";\nfor( int i=0; i<sizeof(" + shadowVar + "); i++ ) { " + realVar + ".push_back(" + shadowVar + "[i]+(" + QString::number(-rot) + ")); }");
+		outputC.push_back("\n" + varType + " " + realVar + " = \"\";\nfor( int i=0; i<sizeof(" + shadowVar + "); i++ ) { " + realVar + ".push_back((" + shadowVar + "[i]+(" + QString::number(-rot) + "))&0xFF); }");
 
 		ui.outputText->setPlainText( outputText );
 		ui.outputC->setPlainText( outputC );
