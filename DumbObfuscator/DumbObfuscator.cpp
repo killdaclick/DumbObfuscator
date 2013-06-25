@@ -54,7 +54,7 @@ void DumbObfuscator::obfuscateButtonClicked( void )
 		else
 			realVar = ui.realVar->text();
 
-		QString outputC = "char " + shadowVar + "[] = " + QString(HEX_LANGC_TABLE_START);
+		QString outputC = "unsigned char " + shadowVar + "[] = " + QString(HEX_LANGC_TABLE_START);
 		signed char rot = ui.rotateValue->text().toInt();
 
 		if( ui.decrSwitch->isChecked() )
