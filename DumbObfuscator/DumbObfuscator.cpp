@@ -109,7 +109,7 @@ void DumbObfuscator::obfuscateButtonClicked( void )
 					hexStr.push_front("0");
 				outputNum.push_back( hexStr );
 				if( itrNext == output.end() )
-					outputC.push_back( HEX_NUM_PREFIX + hexStr.toUpper() + HEX_LANGC_TABLE_STOP );
+					outputC.push_back( HEX_NUM_PREFIX + hexStr.toUpper() + HEX_LANGC_TABLE_STOP + "\t// " + input );
 				else
 					outputC.push_back( HEX_NUM_PREFIX + hexStr.toUpper() + HEX_NUM_NEXT_VAL );
 
